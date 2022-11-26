@@ -1,0 +1,36 @@
+#普通的Service通过Label Selector对后端Endpoint列表进行了一次抽
+#象，如果后端的Endpoint不是由Pod副本集提供的，则Service还可以抽
+#象定义任意其他服务，将一个Kubernetes集群外部的已知服务定义为
+#Kubernetes内的一个Service，供集群内的其他应用访问，常见的应用
+#场景包括：
+#◎ 已部署的一个集群外服务，例如数据库服务、缓存服务等；
+#◎ 其他Kubernetes集群的某个服务；
+#◎ 迁移过程中对某个服务进行Kubernetes内的服务名访问机制的验证。
+
+#对于这种应用场景，用户在创建Service资源对象时不设置Label
+#Selector（后端Pod也不存在），同时再定义一个与Service关联的
+#Endpoint资源对象，在Endpoint中设置外部服务的IP地址和端口号，例如：
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-endpoint-demo
+spec:
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: service-endpoint-demo
+subsets:
+  - addresses:
+    # 183.232.231.174 => www.baidu.com
+    - ip: 183.232.231.174
+    ports:
+    - name: http
+      port: 80
+      protocol: TCP

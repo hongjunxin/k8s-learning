@@ -1,0 +1,23 @@
+#同Node、同zone、同region的优先级顺序路由流量，如果
+#Node、zone、region都没有可用的Endpoint，则将请求路由到集群内任
+#意可用的Endpoint上：
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: webapp
+spec:
+  sessionAffinity: None
+  type: ClusterIP
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+    name: web
+  selector:
+    app: webapp
+  topologyKey:
+  - "kubernetes.io/hostname"
+  - "topology.kubernetes.io/zone"
+  - "topology.kubernetes.io/region"
+  - "*"

@@ -1,0 +1,24 @@
+#通常在公有云环境中设置Service的类型为“LoadBalancer”，可以将
+#Service映射到公有云提供的某个负载均衡器的IP地址上，客户端通过
+#负载均衡器的IP和Service的端口号就可以访问到具体的服务，无须再
+#通过kube-proxy提供的负载均衡机制进行流量转发。公有云提供的
+#LoadBalancer可以直接将流量转发到后端Pod上，而负载分发机制依赖
+#于公有云服务商的具体实现。
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: webapp-lb
+  annotations:
+      service.beta.kubernetes.io/aws-load-balancer-internal: "true"
+      service.beta.kubernetes.io/aws-load-balancer-type: nlb-ip    
+      service.beta.kubernetes.io/aws-load-balancer-subnets: "xxx"
+spec:
+  type: LoadBalancer
+  selector:
+    app: webapp
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+    name: web

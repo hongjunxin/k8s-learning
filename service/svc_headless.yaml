@@ -1,0 +1,17 @@
+# 当客户端通过DNS服务名“nginx”（或其FQDN全限定域名“nginx.
+# <namespace>.svc.cluster.local” ） 和服务端口号访问该Headless 服务
+#（URL=nginx：80）时，将得到Service后端Endpoint列表，然后由客户端程序自行决定如
+# 何操作，例如通过轮询机制访问各个Endpoint。
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+  labels:
+    app: nginx
+spec:
+  ports:
+  - port: 80
+  clusterIP: None
+  selector:
+    app: nginx

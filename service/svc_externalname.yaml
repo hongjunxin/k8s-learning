@@ -1,0 +1,13 @@
+#ExternalName类型的服务用于将集群外的服务定义为Kubernetes的
+#集群的Service，并且通过externalName字段指定外部服务的地址，可
+#以使用域名或IP格式。集群内的客户端应用通过访问这个Service就能
+#访问外部服务了。这种类型的Service没有后端Pod，所以无须设置
+#Label Selector
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-externalname
+spec:
+  type: ExternalName
+  externalName: www.baidu.com
