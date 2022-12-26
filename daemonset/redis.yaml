@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  labels:
+    app: redis
+  name: redis
+  namespace: learn
+spec:
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      tolerations:
+      - key: node-role.kubernetes.io/control-plane
+        effect: NoSchedule
+        operator: Exists    
+      containers:
+      - image: redis:5-alpine
+        name: redis
+        ports:
+        - containerPort: 6379
+        resources: {}

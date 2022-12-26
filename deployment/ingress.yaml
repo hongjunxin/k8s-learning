@@ -1,0 +1,30 @@
+# 生成 yaml 的命令
+# kubectl create ing ngx-ing --rule="ngx.test/=ngx-svc:80" --class=ngx-ink --dry-run=client -o yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ngx-ing
+  namespace: learn
+spec:
+  ingressClassName: ngx-ink
+  rules:
+  - host: ngx.test
+    http:
+      paths:
+      - backend:
+          service:
+            name: ngx-svc
+            port:
+              number: 8080
+        path: /
+        pathType: Exact
+
+---
+apiVersion: networking.k8s.io/v1
+kind: IngressClass
+metadata:
+  # IngressClass 不需要命名空间
+  name: ngx-ink
+spec:
+  controller: nginx.org/ingress-controller
+

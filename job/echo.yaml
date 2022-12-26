@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: echo
+  namespace: learn
+spec:
+  # after the Job finishes, it is eligible to be automatically deleted.
+  ttlSecondsAfterFinished: 15
+  activeDeadlineSeconds: 15
+  backoffLimit: 2
+  completions: 4
+  parallelism: 2
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+      - image: busybox
+        name: echo
+        imagePullPolicy: IfNotPresent
+        command: ["/bin/echo"]
+        args: ["hello", "world"]

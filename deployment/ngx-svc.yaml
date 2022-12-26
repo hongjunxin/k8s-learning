@@ -1,0 +1,19 @@
+# 生成命令
+# kubectl expose deploy ngx --port=8080 --target-port=80 -n learn  --dry-run=client -o yaml > nginx-svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ngx
+  name: ngx-svc
+  namespace: learn
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: ngx
+status:
+  loadBalancer: {}

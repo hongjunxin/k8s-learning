@@ -1,0 +1,16 @@
+# 生成命令
+# kubectl autoscale deploy ngx-hpa-dep --min=2 --max=5 -n learn --cpu-percent=5 $out
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: ngx-hpa
+  namespace: learn
+
+spec:
+  maxReplicas: 5
+  minReplicas: 2
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ngx-hpa-dep
+  targetCPUUtilizationPercentage: 5

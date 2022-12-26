@@ -1,0 +1,23 @@
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: env-pod-v2
+  namespace: learn
+
+spec:
+  containers:
+  - image: busybox
+    name: busy
+    imagePullPolicy: IfNotPresent
+    command: ["/bin/sleep", "3000"]
+    envFrom:
+    - prefix: 'WORDPRESS_DB_'
+      configMapRef: 
+        name: info
+
+# pod 中将会有以下的环境的变量
+# WORDPRESS_DB_greeting=say hello to kubernetes.
+# WORDPRESS_DB_path=/etc/systemd
+# WORDPRESS_DB_count=40
+# WORDPRESS_DB_debug=on

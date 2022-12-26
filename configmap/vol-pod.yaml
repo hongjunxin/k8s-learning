@@ -3,9 +3,10 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: vol-pod
-  namespace: jaxon-test
+  namespace: learn
 
 spec:
+  restartPolicy: Never
   volumes:
   - name: cm-vol
     configMap:

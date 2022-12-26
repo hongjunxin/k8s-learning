@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: ngx
+  name: ngx-dep-rollout
+  namespace: learn
+  annotations: 
+    # kubectl rollout history 输出中 CHANGE-CAUSE 字段的注解
+    kubernetes.io/change-cause: v1, ngx=1.21
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ngx-rollout
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: ngx-rollout
+    spec:
+      volumes: 
+        - name: ngx-conf-vol 
+          configMap: 
+            name: ngx-conf-rollout
+      containers:
+      - image: nginx:1.21-alpine
+        name: nginx
+        ports:
+        - containerPort: 80
+        volumeMounts: 
+        - mountPath: /etc/nginx/conf.d 
+          name: ngx-conf-vol
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+          limits:
+            cpu: 200m
+            memory: 400Mi                
